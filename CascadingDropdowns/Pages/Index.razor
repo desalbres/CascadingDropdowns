@@ -1,0 +1,72 @@
+﻿@page "/"
+@inject ProductService productService
+<h3>Cascading Dropdowns Demo</h3>
+@if (products != null)
+{
+    <div class="form-group">
+        <label for="product">
+            Please select your product:
+        </label>
+        <select class="form-control" @onchange="selectBrand">
+            <option>@productInitialSelect</option>
+            @foreach (var p in products)
+            {
+                <option>@p.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>
+            Please select your brand:
+        </label>
+        <select class="form-control" @bind="selectedBrand">
+            <option>@brandInitialSelect</option>
+            @foreach (var p in selectedBrands)
+            {
+                <option>@p</option>
+            }
+        </select>
+    </div>
+    <button @onclick="showResult" class="btn btn-primary">Submit</button>
+
+    <h2>
+        @result
+    </h2>
+
+}
+
+@code {
+    string productInitialSelect = "<-- Please select your product -->";
+    string brandInitialSelect = "<-- Plase select you brand -->";
+    string selectedProduct;
+    string selectedBrand { get; set; }
+    string result { get; set; }
+    List<string> selectedBrands { get; set; } = new List<string>();
+    List<Products> products { get; set; }
+
+    protected override void OnInitialized()
+    {
+        products = productService.getProducts;
+        selectedProduct = productInitialSelect;
+        selectedBrand = brandInitialSelect;
+    }
+    void selectBrand(ChangeEventArgs e)
+    {
+        selectedProduct = e.Value.ToString();
+        if (selectedProduct == productInitialSelect)
+            selectedBrands = new List<string>();
+        else
+            selectedBrands = products.FirstOrDefault(c => c.Name == selectedProduct).Brands;
+    }
+
+    void showResult()
+    {
+        if (selectedProduct != productInitialSelect && selectedBrand != brandInitialSelect)
+            result = $"You selected product {selectedProduct} and {selectedBrand} !";
+        else
+            result = "Please select a product and brand ! ";
+
+
+    }
+
+}
