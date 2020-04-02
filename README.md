@@ -1,6 +1,6 @@
 # CascadingDropdowns
 Blazor Cascading Dropdowns
 
-Here is a working demo: https://blazordemos.exceldev.com
+You can see a [live demo here](https://blazordemos.exceldev.com/CascadingDropdowns) !
 
 Updated to .NET 3.1
